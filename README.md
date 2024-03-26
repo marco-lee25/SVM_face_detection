@@ -1,11 +1,12 @@
-# Face_detection
+# Face_detection_using_SVM
 
 ### Project Objective
 
 Experiment with Support Vector Machine and Kernel Support Vector Machine classifiers to detect whether there is a face in a small image patch. And compare their performance.
 
 ### Dataset
-The dataset contains face and non-face images with 19x19 pixel values.
+The dataset contains face and non-face images with 19x19 pixel values.<br />
+REMARK：This project only used part of the images as dataset is large.
 
 | Data overview  | Face and non-face sample |
 | ------------- | ------------- |
@@ -44,15 +45,16 @@ We can then look at the _true positive rate_ and the _false positive rate_.
 Train the SVM classifiers directly based on the pixel.
 ###### Result
 ```
-Fitting 5 folds for each of 10 candidates, totalling 50 fits
-Fitting 5 folds for each of 100 candidates, totalling 500 fits
-Fitting 5 folds for each of 30 candidates, totalling 150 fits
+==============
+Method :  pixel_based
 Training Accuracy - svm-lin: 0.9833810888252149
 Testing Accuracy - svm-lin: 0.6430084745762712
 Training Accuracy - svm-rbf: 1.0
 Testing Accuracy - svm-rbf: 0.6578389830508474
 Training Accuracy - svm-poly: 1.0
 Testing Accuracy - svm-poly: 0.6620762711864406
+==============
+Method :  pixel_based
 TP= 154
 FP= 1
 TN= 471
@@ -80,12 +82,16 @@ Since there are 4 filters, then the feature vector is 100 dimensions.
 Train the SVM classifiers on feature extracted from images.
 ###### Result
 ~~~
+==============
+Method :  feature_extraction
 Training Accuracy - svm-lin: 0.9621776504297994
 Testing Accuracy - svm-lin: 0.7129237288135594
 Training Accuracy - svm-rbf: 0.9977077363896848
 Testing Accuracy - svm-rbf: 0.7341101694915254
 Training Accuracy - svm-poly: 0.9914040114613181
 Testing Accuracy - svm-poly: 0.7542372881355932
+==============
+Method :  feature_extraction
 TP= 226
 FP= 32
 TN= 665
