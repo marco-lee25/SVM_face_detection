@@ -19,11 +19,12 @@ import skimage.exposure
 import skimage.io
 import skimage.util
 
-from utils import image_montage, extract_features, load_dataset
+from utils import image_montage, extract_features, load_dataset, err_analysis
+
 root_dir = os.path.dirname(__file__)
 random.seed(2024)
 
-def detect(trainX, testX):
+def detect(trainX, testX, method="pixel_based"):
     clfs = {}
     # setup all the parameters and models
     exps = {
@@ -48,6 +49,8 @@ def detect(trainX, testX):
         clfs[name].fit(trainXn, trainY)
     predYtrain = {}
     predYtest  = {}
+    print("==============")
+    print("Method : ", method)
     for (name, clf) in clfs.items():
         predYtrain[name] = clfs[name].predict(trainXn)
         predYtest[name] = clfs[name].predict(testXn)
@@ -56,28 +59,6 @@ def detect(trainX, testX):
         print("Training Accuracy - "+ name + ": " + str(trainingAccuracyScore))
         print("Testing Accuracy - "+ name + ": " + str(testAccuracyScore))
     return predYtrain, predYtest, clfs, scaler
-
-
-def err_analysis(testY, predY):
-    # predY is the prediction from the classifier
-    Pind = where(testY==1) # indicies for face
-    Nind = where(testY==0) # indicies for non-face
-
-    TP = count_nonzero(testY[Pind] == predY[Pind])
-    FN = count_nonzero(testY[Pind] != predY[Pind])
-    TN = count_nonzero(testY[Nind] == predY[Nind])
-    FP = count_nonzero(testY[Nind] != predY[Nind])
-
-    TPR = TP / (TP+FN)
-    FPR = FP / (FP+TN)
-
-    print("TP=", TP)
-    print("FP=", FP)
-    print("TN=", TN)
-    print("FN=", FN)
-    print("TPR=", TPR)
-    print("FPR=", FPR)
-
 
 
 if __name__ == "__main__":
@@ -124,7 +105,7 @@ if __name__ == "__main__":
     Evaluate all classifiers on the test set.
     Normalize the features and setup all the parameters and models.
     """
-    predYtrain, predYtest, clfs, _ = detect(trainX, testX)
+    predYtrain, predYtest, clfs, _ = detect(trainX, testX, "pixel_based")
     # set variables for later
     predY = predYtest['svm-poly']
     #adaclf = clfs['ada'].best_estimator_
@@ -132,7 +113,7 @@ if __name__ == "__main__":
     svmclf_poly = clfs['svm-poly'].best_estimator_
     #rfclf = clfs['rf'].best_estimator_
     # Error analysis
-    err_analysis(testY, predY)
+    err_analysis(testY, predY, "pixel_based")
 
     """
     For kernel SVM, we can look at the support vectors to see what the classifier finds difficult. svmclf is the trained SVM classifier.
@@ -155,7 +136,6 @@ if __name__ == "__main__":
     so it is difficult for the classifier to interpret larger structures of the face that might be important.  
     To fix the problem, we will extract features from the image using a set of filters.
 
-    Run the below code to look at the filter output.  
     The filters are a sets of black and white boxes that respond to similar structures in the image.  
     After applying the filters to the image, the filter response map is aggregated over a 4x4 window.  
     Hence each filter produces a 5x5 feature response.  
@@ -179,15 +159,14 @@ if __name__ == "__main__":
     # print(testXf.shape)
 
     # Train AdaBoost and SVM classifiers on the image feature data.  Evaluate on the test set.
-    predYtrain, predYtest, clfs, scalerf = detect(trainXf, testXf)
+    predYtrain, predYtest, clfs, scalerf = detect(trainXf, testXf, "feature_extraction")
     testY = predYtest['svm-rbf']
     bestclf = clfs['svm-rbf']
     ft_poly_test_pred = predYtest['svm-poly']
 
     # Error Analysis
-    err_analysis(testY, ft_poly_test_pred)
+    err_analysis(testY, ft_poly_test_pred, "feature_extraction")
 
-    exit()
     # ====================================================
     # Test image
     fname = "nasa-small.png"
@@ -195,9 +174,9 @@ if __name__ == "__main__":
 
     # convert to grayscale
     testimg = skimage.color.rgb2gray(testimg3)
-    print(testimg.shape)
-    plt.imshow(testimg, cmap='gray')
-    plt.show()
+    # print(testimg.shape)
+    # plt.imshow(testimg, cmap='gray')
+    # plt.show()
 
     # step size for the sliding window
     step = 4
@@ -248,4 +227,4 @@ if __name__ == "__main__":
     plt.imshow(detimg)
     plt.title('image')
     plt.axis('image')
-    plt.show()
+    plt.savefig(os.path.join(root_dir, "imgs", "test_img_result.png"))

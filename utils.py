@@ -157,3 +157,25 @@ def extract_features(imgs, doplot=False):
         X[i,:] = x
     
     return X
+
+
+def err_analysis(testY, predY, method="pixel_based"):
+    # predY is the prediction from the classifier
+    Pind = where(testY==1) # indicies for face
+    Nind = where(testY==0) # indicies for non-face
+
+    TP = count_nonzero(testY[Pind] == predY[Pind])
+    FN = count_nonzero(testY[Pind] != predY[Pind])
+    TN = count_nonzero(testY[Nind] == predY[Nind])
+    FP = count_nonzero(testY[Nind] != predY[Nind])
+
+    TPR = TP / (TP+FN)
+    FPR = FP / (FP+TN)
+    print("==============")
+    print("Method : ", method)
+    print("TP=", TP)
+    print("FP=", FP)
+    print("TN=", TN)
+    print("FN=", FN)
+    print("TPR=", TPR)
+    print("FPR=", FPR)
