@@ -3,6 +3,7 @@
 ### Project Objective
 
 Experiment with Support Vector Machine and Kernel Support Vector Machine classifiers to detect whether there is a face in a small image patch. And compare their performance.
+(Part of my course work during University)
 
 ### Dataset
 The dataset contains face and non-face images with 19x19 pixel values.<br />
