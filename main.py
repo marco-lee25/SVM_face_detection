@@ -163,8 +163,11 @@ if __name__ == "__main__":
     """
     # new features
     img = imgdata['train'][0]
+    plt.figure(figsize=(9,9))
     plt.imshow(img, cmap='gray', interpolation='nearest')
     plt.title("image")
+    plt.savefig(os.path.join(root_dir, "imgs", "target_img_for_filter.png"))
+    
     plt.figure(figsize=(9,9))
     extract_features([img], doplot=True)
     plt.savefig(os.path.join(root_dir, "imgs", "img_filtered.png"))
