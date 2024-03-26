@@ -99,8 +99,20 @@ FN= 21
 TPR= 0.9149797570850202
 FPR= 0.04591104734576758
 ~~~
+### Performance on test data 
+<img src="https://github.com/marco-lee25/Face_detection/blob/main/imgs/test_img_result.png" width="800"/>
 
+Although it doesn't seem very accurate since we can see that it detected a few faces, it also had some false positives and didn't detect as many True positives as it should have.<br />
+But please be reminded that this project only used one-quarter of the dataset, the performance could be improved if numbers of images increase. 
 
+ ### Train your own SVM!
+~~~
+python main.py --data_subsample 4 --max_test 472 --random_seed --seed 2024 --method all
 
-
- 
+--data_subsample : The factor of sample the dataset
+--max_test : The maximum number of test samples for each class
+--random_seed :Fixing the random seed
+--seed : The random seed
+--method : ["all", "pixel_based", "feature_based"]
+--test_img : Your own test_img, default using the nasa-small.png
+~~~
