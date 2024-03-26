@@ -42,6 +42,7 @@ We can then look at the _true positive rate_ and the _false positive rate_.
 ### SVM on Pixel Values
 
 Train the SVM classifiers directly based on the pixel.
+###### Result
 ```
 Fitting 5 folds for each of 10 candidates, totalling 50 fits
 Fitting 5 folds for each of 100 candidates, totalling 500 fits
@@ -59,8 +60,11 @@ FN= 318
 TPR= 0.326271186440678
 FPR= 0.00211864406779661
 ```
+**The support vector** <br />
+There are a total of 307 images are chosen to be the support vectors from the best classifier - _SVM-Poly_ <br />
+<img src="https://github.com/marco-lee25/Face_detection/blob/main/imgs/sv_img.png" width="600"/>
 
-**The detection performance is not that good using pixel values.**<br /> The problem is that we are using the raw pixel values as features, so it is difficult for the classifier to interpret larger structures of the face that might be important. We can see that there is only one false positive but so many false negatives, which means it predicts it to be non-face when it is supposed to predict it as a face. In addition, we can see that the true positive rate is also less, which means it is not able to predict the faces properly.
+**The detection performance is not that good using pixel values.** <br /> The problem is that we are using the raw pixel values as features, so it is difficult for the classifier to interpret larger structures of the face that might be important. We can see that there is only one false positive but so many false negatives, which means it predicts it to be non-face when it is supposed to predict it as a face. In addition, we can see that the true positive rate is also less, which means it is not able to predict the faces properly.
 
 ### SVM on Image Feature
 To fix the problem of SVM using pixel values, we can extract features from the image using a set of filters.
@@ -71,7 +75,24 @@ Since there are 4 filters, then the feature vector is 100 dimensions.
 
 | Target image  | Feature extraced |
 | ------------- | ------------- |
-| <img src="https://github.com/marco-lee25/Face_detection/blob/main/imgs/train_data.png" width="400"/>  | <img src="https://github.com/marco-lee25/Face_detection/blob/main/imgs/data_sample.png" width="400"/>  |
+| <img src="https://github.com/marco-lee25/Face_detection/blob/main/imgs/target_img_for_filter.png" width="400"/>  | <img src="https://github.com/marco-lee25/Face_detection/blob/main/imgs/img_filtered.png" width="400"/>  |
+
+Train the SVM classifiers on feature extracted from images.
+###### Result
+~~~
+Training Accuracy - svm-lin: 0.9621776504297994
+Testing Accuracy - svm-lin: 0.7129237288135594
+Training Accuracy - svm-rbf: 0.9977077363896848
+Testing Accuracy - svm-rbf: 0.7341101694915254
+Training Accuracy - svm-poly: 0.9914040114613181
+Testing Accuracy - svm-poly: 0.7542372881355932
+TP= 226
+FP= 32
+TN= 665
+FN= 21
+TPR= 0.9149797570850202
+FPR= 0.04591104734576758
+~~~
 
 
 
