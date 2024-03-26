@@ -69,7 +69,9 @@ After applying the filters to the image, the filter response map is aggregated o
 Hence each filter produces a 5x5 feature response.
 Since there are 4 filters, then the feature vector is 100 dimensions.
 
-
+| Target image  | Feature extraced |
+| ------------- | ------------- |
+| <img src="https://github.com/marco-lee25/Face_detection/blob/main/imgs/train_data.png" width="400"/>  | <img src="https://github.com/marco-lee25/Face_detection/blob/main/imgs/data_sample.png" width="400"/>  |
 
 
 
