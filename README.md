@@ -107,6 +107,8 @@ But please be reminded that this project only used one-quarter of the dataset, t
 
  ### Train your own SVM!
 ~~~
+pip install -r requirements.txt
+
 python main.py --data_subsample 4 --max_test 472 --random_seed --seed 2024 --method all
 
 --data_subsample : The factor of sample the dataset
