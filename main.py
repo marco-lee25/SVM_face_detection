@@ -1,6 +1,3 @@
-import IPython.core.display         
-# setup output image format (Chrome works best)
-IPython.core.display.set_matplotlib_formats("svg")
 import matplotlib.pyplot as plt
 import matplotlib
 from numpy import *
